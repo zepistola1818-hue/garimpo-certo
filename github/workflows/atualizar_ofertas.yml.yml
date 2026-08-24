@@ -1,0 +1,28 @@
+name: Atualizar Vitrine - Garimpo Certo
+
+on:
+  schedule:
+    # Roda a cada 4 horas automaticamente
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Permite rodar manualmente clicando num botão no GitHub
+
+jobs:
+  executar-robo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências necessárias
+        run: |
+          python -m pip install --upgrade pip
+          pip install supabase requests beautifulsoup4
+
+      - name: Rodar o script scraper
+        run: python scraper.py
